@@ -1,22 +1,20 @@
-package faas
+package function
 
 import (
 	"fmt"
-	"io"
 	"net/http"
+
+	handler "github.com/openfaas/templates-sdk/go-http"
 )
 
-func Handle(w http.ResponseWriter, r *http.Request) {
-	var input []byte
+// Handle a function invocation
+func Handle(req handler.Request) (handler.Response, error) {
+	var err error
 
-	if r.Body != nil {
-		defer r.Body.Close()
+	message := fmt.Sprintf("Hello world, input was: %s", string(req.Body))
 
-		body, _ := io.ReadAll(r.Body)
-
-		input = body
-	}
-
-	w.WriteHeader(http.StatusOK)
-	w.Write([]byte(fmt.Sprintf("Body: %s", string(input))))
+	return handler.Response{
+		Body:       []byte(message),
+		StatusCode: http.StatusOK,
+	}, err
 }
