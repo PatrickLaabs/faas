@@ -1,4 +1,4 @@
-package GreeterFunc
+package function
 
 import (
 	"fmt"
